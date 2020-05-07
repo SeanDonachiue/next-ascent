@@ -1,0 +1,199 @@
+.App {
+  text-align: center;
+  background-color: #282c34;
+}
+.App-header {
+  background-color: #282c34;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+.image-grid {
+
+}
+.wrap-wrapper {
+}
+.item-wrapper {
+
+}
+.image-item {
+}
+.route-info {
+
+}
+#search {
+  width: 100%;
+  background-color: #282c34;
+  border: none;
+  border-color: transparent;
+  color: lightgrey;
+  position: fixed;
+  top: 1rem;
+  left: 3rem;
+  z-index: 1;
+}
+#search:focus {
+  outline: lightgrey;
+  caret-color: cyan;
+}
+.stepper {
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: center;
+  background-color: #282c34;
+}
+#toggleGroup {
+  position: top right;
+}
+.in {
+  background-color: #282c34;
+  width: 90%;
+  text-align: center;
+}
+img {
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  vertical-align:center;
+  display: block;
+  max-height: 480;
+  border-radius: 5px;
+}
+.image-grid {
+  width:100%;
+  margin: 0 auto 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  div {
+    height: 480;
+    text-align: center;
+    font-family: system-ui;
+    font-weight: 900;
+    flex: 1 1 auto;
+  } 
+}
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default padding */
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Set core body defaults */
+html { height: 100%; }
+body {
+  height: 100%;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+
+
+/* Natural flow and rhythm in articles by default */
+article > * + * {
+  margin-top: 1em;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* Box-sizing reset: //w3bits.com/?p=3225 */
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+/*
+// /* The Masonry Container */
+// .image-grid {
+//   margin: 0.5em auto;
+//   max-width: 90%;
+//   column-gap: 0.5em;
+// }
+
+// /* The Masonry Brick */
+// .wrap-wrapper {
+//   background: black;
+//   padding: 0.5em;
+//   margin: 0 0 1.5em;
+// }
+
+// /* Masonry on large screens */
+// @media only screen and (min-width: 1024px) {
+//   .image-grid {
+//     column-count: 3;
+//   }
+// }
+
+//  Masonry on medium-sized screens 
+// @media only screen and (max-width: 1023px) and (min-width: 768px) {
+//   .image-grid {
+//     column-count: 3;
+//   }
+// }
+
+// /* Masonry on small screens */
+// @media only screen and (max-width: 767px) and (min-width: 540px) {
+//   .image-grid {
+//     column-count: 2;
+//   }
+// }
