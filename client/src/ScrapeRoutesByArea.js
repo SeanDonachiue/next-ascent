@@ -25,6 +25,7 @@ function ScrapeRoutesByArea(props) {
 	const [currPage, setCurrPage] = useState(1)
 	const [numPages, setNumPages] = useState(1)
 	const [hasMore, setHasMore] = useState(true)
+	const [noRes, setNoRes] = useState(false)
 	//when anything changes, fetchImages?
 	//no way....
 	useEffect(() => {
@@ -38,7 +39,7 @@ function ScrapeRoutesByArea(props) {
 
 	const fetchImages = () => {
 			//props.searchStr is our query string 
-
+			setNoRes(false)
 			if(currPage == numPages && numPages > 1 ) {
 				setHasMore(false)
 			}
@@ -48,7 +49,7 @@ function ScrapeRoutesByArea(props) {
 			responseType: 'json',
 			timeout: '3000'
 			}) //query the backend DB
-			//this query goes through, the response should be good as well, why does it no longer work here?
+			//need error handling for 404 here.
 			.then(res => {
 				//split info into arrays of objects
 				console.log(res)
@@ -88,6 +89,10 @@ function ScrapeRoutesByArea(props) {
 			})
   		.catch(function (err) {
     		console.log(err)
+    		if (err.response.status == 404) {
+    			setNoRes(true)
+    			console.log(noRes)
+    		}
   		})
   		setCurrPage(currPage + 1)
 		}
@@ -102,6 +107,11 @@ function ScrapeRoutesByArea(props) {
   		<a href={props.url} ><h3> {props.name} - {props.grade}</h3> </a>
   	</div>
   )
+
+
+  const err404 = () => (
+  		<h3>There are no results.</h3>
+  	)
 
 	function loadCardComponents() {
   				let j = 0
@@ -132,15 +142,16 @@ function ScrapeRoutesByArea(props) {
   					j+=4;
   					newArray.push(piece)
   				
-  				}
+
   				return newArray.map((brick) => (
   					<div className="wrap-wrapper" key={uuid()}>{brick}</div>
   				));
+  			}
 	}
 
   return (
 			<InfiniteScroll
-  			dataLength={images} //This is important field to render the next data
+  			dataLength={images} //This is the important field to render the next data
   			next={() => fetchImages()}
   			hasMore={hasMore}
   			loader={<LadderLoading/>} //TODO make a rad loading animation, like of a girl climbing, or a figure-8 being tied.
@@ -150,7 +161,7 @@ function ScrapeRoutesByArea(props) {
     			</p>
   			} >
   			<div className="image-grid">
-  				{loadCardComponents()}
+  				{noRes ? <err404/> : loadCardComponents()}
 				</div>
 			{/*used to just say map(image, index) => (<Image>)*/}
 			</InfiniteScroll>

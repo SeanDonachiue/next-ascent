@@ -1,6 +1,12 @@
 import React from 'react'
 import ScrapeRoutesByArea from "./ScrapeRoutesByArea"
-import ToggleGroup from "./toggleGroup"
+import ImportExportIcon from '@material-ui/icons/ImportExport'
+import CheckIcon from '@material-ui/icons/Check'
+import ToggleButton from '@material-ui/lab/ToggleButton'
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import {useState} from "react"
 /*
 	 
 
@@ -21,17 +27,20 @@ class Scraper extends React.Component {
 		super(props)
 		this.state = {str:"", flag: false, sort: 1, categories: ""}
 
-		this.toggleRef = React.createRef()
 		//ugly / bad style. React is ridiculous in this way, or I am.
 		this.setFlag.bind(this)
 		this.setStr.bind(this)
 		this.handleChange.bind(this)
 		this.handleSubmit.bind(this)
-		this.handleClick.bind(this)
 		this.render.bind(this)
 		this.setState.bind(this)
 		this.setFlag.bind(this.delay)
 		this.sleep.bind(this)
+
+		this.setSort.bind(this)
+		this.setCategories.bind(this)
+		this.handleSort.bind(this)
+		this.handleCat.bind(this)
 	}
 
 
@@ -63,32 +72,32 @@ class Scraper extends React.Component {
 	}
 	async handleSubmit(e) {
 		e.preventDefault()
-		const refSort = this.toggleRef.current.state.sort
-		const refCat = this.toggleRef.current.state.categories
-		this.setState({sort: refSort, categories: refCat}, () => {this.setFlag(true)})
+		this.setFlag(true)
 		
 		//doesn't re render the fucking component when I update this.
 	}
 
- //you click but state hasn't changed yet. 
-	handleClick(e) {
-		e.preventDefault()
-		this.setFlag(false)
-		this.sleep(100)
-		console.log("clicked!") //it doesn't update because the click event needs to be deeper somehow. This function executes too early, basically.
-		//set a flag in the togglegroup component when something is clicked? how do you do an alert pattern?
-		/*
-			set a flag when something is clicked, and you check it up here when?
-			doesn't seem like it will work, its literally the same mechanism and issue.
 
-			OK the other option is to just put that code in here and change the local state instead of checking state down in the tree.
-		*/
-		const refSort = this.toggleRef.current.state.sort
-		const refCat = this.toggleRef.current.state.categories
-		console.log(refCat)
-		this.setState({sort: refSort, categories: refCat}, () => {this.setFlag(true)})
-		
-		}
+	//need to make the flag false first when you click something.
+
+	setSort(newSort) {
+		this.setFlag(false)
+		this.setState({sort: newSort}, () => {this.setFlag(true)})
+	}
+
+	setCategories(newCategories) {
+		this.setFlag(false)
+		this.setState({categories: newCategories}, () => {this.setFlag(true)})
+	}
+
+	handleSort (e, newSort) {
+		this.setSort(!this.state.sort)
+	}
+
+	handleCat(e, newCats) {
+		this.setCategories(newCats)
+	}
+
 	render() {
 		return (
 			<div className="in">
@@ -101,9 +110,25 @@ class Scraper extends React.Component {
       	  	onChange={this.handleChange.bind(this)}
       	  	placeholder="Enter a climbing area to explore..."
       	  />
-      	  <div id="tg-wrapper" onClick={this.handleClick.bind(this)} >
-      	  	<ToggleGroup id="toggleGroup" ref={this.toggleRef} />
-      	  </div>
+      	  	<div id="tg-wrapper" style={{margin: "0.6rem", position: "fixed", top: 4, right: "6rem", zIndex: "2"}}>
+							<ToggleButton value="Order" selected={this.state.sort} onChange={this.handleSort.bind(this)} aria-label="sort">
+								<ImportExportIcon style={{color: "white"}} />
+							</ToggleButton>
+							<ToggleButtonGroup
+								value={this.state.categories}
+								onChange={this.handleCat.bind(this)}
+							>
+								<ToggleButton value="Trad" aria-label="Trad">
+									<Typography>Trad</Typography>
+								</ToggleButton>
+								<ToggleButton value="Sport" aria-label="Sport">
+									<Typography>Sport</Typography>
+								</ToggleButton>
+								<ToggleButton value="Boulder" aria-label="Boulder">
+									<Typography>Boulder</Typography>
+								</ToggleButton>
+								</ToggleButtonGroup>
+						</div>
       	</form>
 				{this.state.flag ? <ScrapeRoutesByArea searchStr={this.state.str} sort={this.state.sort} categories={this.state.categories}  /> : ""}
 			</div>
