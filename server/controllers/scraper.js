@@ -94,10 +94,14 @@ async function idToRouteInfo(routesIn) {
 					let commaIndex = $('.description-details').find('td').next().text().indexOf(',')
 					routeStyle = $('.description-details').find('td').next().text().substring(0, commaIndex).trim()
 				}
-				
+				let routeFA = $( 'tr', '.description-details').next().children().next().text().trim() //Trim seems to not work here.
+				//look for \n character, substring there. and trim it.
+				lineIndex = routeFA.indexOf('\n')
+				routeFA = routeFA.substring(0, lineIndex).trim()
+				let desc = $('.fr-view').text()
 				let cut = $('.rateYDS').text().indexOf(' ')
 				let grade = $('.rateYDS').text().substring(0, cut)
-				//Somehow have the wrong routeID attaching to these, which makes no sense at all, since its already been used to get everything else which is correct.
+				
 				let routeInfo = {
 					name: $('h1').text().trim(),
 					grade: grade,
@@ -105,6 +109,8 @@ async function idToRouteInfo(routesIn) {
 					mplink: 'https://www.mountainproject.com/route/' + routeID,
 					location: [],
 					style: routeStyle,
+					FA: routeFA,
+					description: desc,
 					images: [] 
 				}
 				//console.log(routeInfo)
@@ -156,7 +162,6 @@ async function idToRouteInfo(routesIn) {
 								//Route.create(routeInfo)
 
 								//cross your fingers.
-
 								const filter = {name: routeInfo.name}
 
 								Route.findOneAndUpdate(filter, routeInfo, {
@@ -217,7 +222,6 @@ getRoutesInArea = (req, res) => {
 
 
 getRouteByName = (req, res) => {
-	//need to do something about case sesnsitivity.
 	Route.findOne({name:  { $regex : new RegExp(req.params.str, "i") }}, {}).then((err, docs) => {
 		console.log(JSON.stringify(docs))
 		console.log(err)

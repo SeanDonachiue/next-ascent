@@ -9,6 +9,7 @@ const Route = new Schema ({
 	location: [String],
 	style: String,
 	FA: String,
+	description: String,
 	images: [{
 		author: String,
 		link: String,

@@ -40,11 +40,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'none',
   },
   img: {
-    maxHeight: window.innerHeight - window.innerHeight*0.05, 
+    maxHeight: window.innerHeight - window.innerHeight*0.02, 
     display: 'block',
     overflow: 'hidden',
+    height: 'auto',
     width: '100%',
-    objectFit: 'contain',
+    objectFit: 'cover',
+    objectPosition:'50% 50%'
   },
 }));
 
@@ -75,34 +77,34 @@ function SwipeableStepper(props) {
       <Paper square elevation={0} className={classes.header}>
         <Typography>{Steps[activeStep].label}</Typography> {/*Steps[activeStep].label is undefined*/}
       </Paper>
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
-      >
+        <SwipeableViews
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={activeStep}
+          onChangeIndex={handleStepChange}
+          enableMouseEvents
+        >
         {Steps.map((step, index) => (
-          <div key={step.label}>
+          <div style={{display: 'flex', alignItems: 'center',}} key={step.label}>
             {Math.abs(activeStep - index) <= 2 ? (
-              <img className={classes.img} src={step.imgPath} alt={step.label} />
+             <img className={classes.img} src={step.imgPath} alt={step.label} />
             ) : null}
           </div>
         ))}
       </SwipeableViews>
       <MobileStepper
         steps={maxSteps}
-        style={{background: 'none', textColor: 'white'}}
+        style={{background: 'none', textColor: 'white', marginTop: -props.bodyHeight / 2 + 100 + 'px', paddingBottom: props.bodyHeight / 2 - 100 + 'px'}}
         position="static"
         variant="text"
         activeStep={activeStep}
         nextButton={
-          <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+          <Button size="large" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+            {theme.direction === 'rtl' ? <KeyboardArrowLeft fontSize="large"/> : <KeyboardArrowRight fontSize="large"/>}
           </Button>
         }
         backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+          <Button size="large" onClick={handleBack} disabled={activeStep === 0}>
+            {theme.direction === 'rtl' ? <KeyboardArrowRight fontSize="large"/> : <KeyboardArrowLeft fontSize="large"/>}
           </Button>
         }
       />

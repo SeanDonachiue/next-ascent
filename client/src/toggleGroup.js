@@ -1,6 +1,5 @@
 import React from "react"
 import ImportExportIcon from '@material-ui/icons/ImportExport'
-import CheckIcon from '@material-ui/icons/Check'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import { makeStyles } from '@material-ui/core/styles'
@@ -44,7 +43,7 @@ class ToggleGroup extends React.Component {
 	//or we can add it i
 	render() {
 	return (
-		<div style={{margin: "0.6rem", position: "fixed", top: 4, right: "6rem", zIndex: "2"}}>
+		<div id="toggleGroup">
 			<ToggleButton value="Order" selected={this.state.sort} onChange={this.handleSort.bind(this)} aria-label="sort">
 				<ImportExportIcon style={{color: "white"}} />
 			</ToggleButton>

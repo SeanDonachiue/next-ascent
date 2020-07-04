@@ -9,63 +9,61 @@ import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/four
 import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import SwipeableStepper from './swipeablestepper'
+import { useRef } from 'react'
 //css
-const useStyles = makeStyles(() => ({
-  root: {
-    maxWidth: '100%',
-    margin: '0.4rem',
-    borderRadius: 12,
-    padding: 6,
-  },
-  heading: {
-    color: 'cyan',
-    textDecoration: 'none',
-    textAlign: 'center',
-    fontSize: 32,
-    lineHeight: 2,
-    fontWeight: 300,
-    fontFamily:
-    // eslint-disable-next-line max-len
-      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-    marginBottom: '0.72em',
-  }, 
-  // media: {
-  //   borderRadius: 6,
-  //   minWidth: 368,
-  //   maxHeight: 480,
-  // },
-}));
+
 
 //props will be a routeInfo object
 /*
-  image = props.images
-*/
-const RouteCard = (props) => {
-  const styles = useStyles();
-  const mediaStyles = useFourThreeCardMediaStyles();
-  const textCardContentStyles = useN04TextInfoContentStyles();
-  const shadowStyles = useOverShadowStyles({ inactive: true });
-  return (
-    <Card className={cx(styles.root, shadowStyles.root)}>
-      
-      <SwipeableStepper 
-        links={props.images} 
-        authors={props.authors}
-      />
-      <CardContent className={styles.content}>
-        {/*<CardMedia
-        className={cx(styles.media, mediaStyles.root)}
-        component= 
-      />*/}
-        <TextInfoContent
-          classes={textCardContentStyles}
-          overline={props.locs.join(' > ')}
-          heading={<a className={styles.heading} href={props.mplink}>{props.name}</a>}
-          body={props.grade + ', ' + props.rstyle}
-        />
-      </CardContent>
-    </Card>
-  );
-};
 
+  Hokay, so I want to convert this function component to a class component so I can use a ref. 
+  Unfortunately, useStyles doesn't work for function components, so I guess I will just move these into my stylesheet?
+  what is the cx function? its just an array of multiple classNames to apply. ok.
+
+*/
+class RouteCard extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.cardRef = React.createRef()
+    this.state = {bodyHeight: 100}
+    // const mediaStyles = useFourThreeCardMediaStyles();
+    // const textCardContentStyles = useN04TextInfoContentStyles(); //wonder  if all of these will give me trouble now.
+    // const shadowStyles = useOverShadowStyles({ inactive: true });
+  }
+  componentDidMount() {
+    this.setState({ bodyHeight: this.cardRef.current.offsetHeight }); //want to pass this number over to the text document.
+  }
+  
+  render() {
+    return (
+
+      <Card ref={this.cardRef} className='card-root'>
+        <SwipeableStepper 
+          links={this.props.images} 
+          authors={this.props.authors}
+          bodyHeight={this.state.bodyHeight}
+        />
+        <CardContent>
+          <TextInfoContent
+            classes={this.textCardContentStyles}
+            overline={this.props.locs.join(' > ')}
+            heading={<a className='card-heading' href={this.props.mplink}>{this.props.name}</a>}
+            body={this.props.grade + ', ' + this.props.rstyle}
+          />
+        {/*TODO add props.fa to this routecard and also move the photo credit*/}
+        </CardContent>
+      </Card>
+    );
+  }
+
+};
+/*
+  switch card for paper. no vertical padding/margin on stepper so white background only
+  small horizontal margin
+  keep name of route, grade, and 
+
+  SOMETIMES FREAKING LOCATIONS DON"T LOAD WHAT
+
+*/
 export default RouteCard;
